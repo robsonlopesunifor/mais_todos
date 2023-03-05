@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from django_cryptography.fields import encrypt
+from django.core.validators import MinLengthValidator
 
 User = get_user_model()
 
@@ -12,10 +13,10 @@ User = get_user_model()
 class CreditCard(models.Model):
     client = models.ForeignKey(User, on_delete=models.CASCADE)
     exp_date = models.DateField()
-    holder = models.CharField(max_length=200)
-    number = encrypt(models.CharField(max_length=200))
-    cvv = models.CharField(max_length=200)
-    brand = models.CharField(max_length=200)
+    holder = models.CharField(max_length=100, validators=[MinLengthValidator(2)])
+    number = encrypt(models.CharField(max_length=20))
+    cvv = models.IntegerField(null=True)
+    brand = models.CharField(max_length=10)
 
     def __str__(self):
         return f"credit_card {self.id}"
