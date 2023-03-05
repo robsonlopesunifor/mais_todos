@@ -4,6 +4,7 @@ from rest_framework.serializers import ModelSerializer
 from django.core.exceptions import ValidationError
 from credit_card.models import CreditCard
 from creditcard import CreditCard as CreditCardValidator
+from credit_card.exceptions import DateFormatException
 
 
 class CreditCardSerializer(ModelSerializer):
@@ -12,18 +13,14 @@ class CreditCardSerializer(ModelSerializer):
         read_only_fields = ("id", "brand")
         fields = ("exp_date", "holder", "number", "cvv", "brand")
 
-    def to_internal_value(self, data):
-        data["exp_date"] = self._format_exp_date_to_date(data["exp_date"])
-        return super(CreditCardSerializer, self).to_internal_value(data)
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['exp_date'] = self._format_date_to_exp_date(data['exp_date'])
-        return data      
-
     def validate_number(self, value):
-        if CreditCardValidator(value).is_valid() == False:
+        if not CreditCardValidator(value).is_valid():
             raise ValidationError("invalid number")
+        return value
+
+    def validate_cvv(self, value):
+        if value and len(str(value)) not in (3, 4):
+            raise ValidationError("must be between 3 and 4 characters")
         return value
 
     def validate_exp_date(self, value):
@@ -32,10 +29,20 @@ class CreditCardSerializer(ModelSerializer):
         return value
 
     def create(self, validated_data):
-        brand = self._get_brand(validated_data['number'])
+        brand = self._get_brand(validated_data["number"])
         credit_card = CreditCard.objects.create(
-            brand=brand, client=self.context['user'], **validated_data)
+            brand=brand, client=self.context["user"], **validated_data
+        )
         return credit_card
+
+    def to_internal_value(self, data):
+        data["exp_date"] = self._format_exp_date_to_date(data["exp_date"])
+        return super(CreditCardSerializer, self).to_internal_value(data)
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["exp_date"] = self._format_date_to_exp_date(data["exp_date"])
+        return data
 
     def _get_brand(self, number):
         return CreditCardValidator(number).get_brand()
