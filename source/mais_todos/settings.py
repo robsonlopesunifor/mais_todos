@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'credit_card.apps.CreditCardConfig',
 ]
 
 MIDDLEWARE = [
@@ -74,9 +78,13 @@ WSGI_APPLICATION = 'mais_todos.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config("POSTGRES_DB", default="postgres", cast=str),
+        "USER": config("POSTGRES_USER", default="postgres", cast=str),
+        "PASSWORD": config("POSTGRES_PASSWORD", default="postgres", cast=str),
+        "HOST": config("POSTGRES_HOST", default="127.0.0.1", cast=str),
+        "PORT": config("POSTGRES_PORT", default=5432, cast=int),
     }
 }
 

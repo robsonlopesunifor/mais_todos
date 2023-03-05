@@ -19,8 +19,7 @@ services:
       context: .
     command: ["./scripts/start.sh"]
     volumes:
-      - ./source:/app
-      - ./scripts:/app/scripts
+      - .:/app
     env_file:
       - ./envs/postgres.env
       - ./envs/.env
