@@ -1,0 +1,35 @@
+version: "3.7"
+networks:
+  banco:
+  back:
+
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    env_file:
+      - ./envs/postgres.env
+    networks:
+      - banco
+
+  django:
+    build: 
+      dockerfile: ./dockerfile
+      context: .
+    command: ["./scripts/start.sh"]
+    volumes:
+      - ./source:/app
+      - ./scripts:/app/scripts
+    env_file:
+      - ./envs/postgres.env
+      - ./envs/.env
+    environment:
+      - DEBUG=True
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+    networks:
+      - banco
+      - back
