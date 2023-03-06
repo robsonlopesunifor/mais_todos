@@ -36,7 +36,6 @@ Para pegar o token acesse o endpoint abaixo com os dados do usuário.
 :----:|-------------------------|
 | POST  | /api-token-auth/
 
-### Exemplo
 
 Realize um Post para o endpoint /api-token-auth/ para pegar o token do usuario. 
 
