@@ -58,8 +58,6 @@ Para criar o cartão você deve passar os dados do cartão e o token do usuário
 :----:|-------------------------|
 | POST  | /api/v1/credit_card/
 
-## Exemplo
-### request
  
 ```bash
 curl --location 'http://localhost:8000/api/v1/credit_card/' \
@@ -81,8 +79,6 @@ Para pegar todos os cartões basta acessar o endpoint abaixo com o token do usu�
 :----:|-------------------------|
 | GET  | /api/v1/credit_card/
 
-## Exemplo
-### request
 
 ```bash
 curl --location 'http://localhost:8000/api/v1/credit_card/' \
