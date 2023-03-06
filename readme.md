@@ -27,7 +27,7 @@ Para fazer as requisições é necessário passa o token de um usuário valido. 
 Para pegar o token acesse o endpoint abaixo com os dados do usuário. 
 
 ```bash 
-    usuario = lucas
+    usuario = pedro
     senha = 123456
 ```
 
