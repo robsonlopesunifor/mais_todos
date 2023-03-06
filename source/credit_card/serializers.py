@@ -11,7 +11,7 @@ class CreditCardSerializer(ModelSerializer):
     class Meta:
         model = CreditCard
         read_only_fields = ("id", "brand")
-        fields = ("exp_date", "holder", "number", "cvv", "brand")
+        fields = ("id", "exp_date", "holder", "number", "cvv", "brand")
 
     def validate_number(self, value):
         if not CreditCardValidator(value).is_valid():
