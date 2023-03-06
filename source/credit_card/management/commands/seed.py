@@ -2,7 +2,6 @@ from contextlib import suppress
 from decouple import config
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
-from credit_card.utils import getenv_or_raise_exception
 
 
 class Command(BaseCommand):
