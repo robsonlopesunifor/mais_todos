@@ -1,4 +1,5 @@
 from contextlib import suppress
+from decouple import config
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from credit_card.utils import getenv_or_raise_exception
@@ -20,6 +21,6 @@ class Command(BaseCommand):
 
 
 def create_superuser():
-    username = getenv_or_raise_exception("TEST_APP_USERNAME")
-    password = getenv_or_raise_exception("TEST_APP_PASSWORD")
+    username = config("TEST_APP_USERNAME", default="pedro", cast=str)
+    password = config("TEST_APP_PASSWORD", default="123456", cast=str)
     get_user_model().objects.create_superuser(username, None, password)

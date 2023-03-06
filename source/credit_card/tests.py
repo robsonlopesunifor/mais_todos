@@ -6,6 +6,7 @@ from rest_framework.test import APIClient
 from credit_card.models import CreditCard
 from unittest.mock import patch
 from creditcard import CreditCard as CreditCardValidator
+from django.core.management import call_command
 from unittest.mock import Mock
 
 
@@ -139,3 +140,8 @@ class TestCreditCard:
         response_data = client.get(url, format="json")
         assert response_data.status_code == 200
         assert response_data.json()[0]['holder'] == data_return['holder']
+
+    def test_command(self):
+        call_command("seed", "--create-superuser")
+        assert len(get_user_model().objects.all()) == 1
+        

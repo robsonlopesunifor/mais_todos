@@ -9,5 +9,6 @@ done
 echo "PosgresSQL está pronto para receber conexão!"
 
 python /app/source/manage.py migrate
-python /app/source/manage.py runserver 0.0.0.0:8000
 python /app/source/manage.py seed --create-superuser
+python /app/source/manage.py runserver 0.0.0.0:8000
+
