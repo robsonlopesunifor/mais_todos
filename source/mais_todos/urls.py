@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from credit_card.routers import router
+from rest_framework.authtoken import views
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("/api/v1/", include((router.urls, "credit_card"), namespace="credit_card")),
+    path("api/v1/", include((router.urls, "credit_card"), namespace="credit_card")),
+    path('api-token-auth/', views.obtain_auth_token),
 ]
