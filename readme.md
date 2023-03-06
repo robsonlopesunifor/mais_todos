@@ -54,14 +54,6 @@ curl --location 'http://localhost:8000/api-token-auth/' \
 
 Para criar o cartão você deve passar os dados do cartão e o token do usuário.  
 
-``` 
-{
-    "exp_date": "10/2222",
-    "holder": "Fulano",
-    "number": "5555666677778884",
-    "cvv": 123
-}
-```
 
 |Verb  |URI Pattern              
 :----:|-------------------------|
