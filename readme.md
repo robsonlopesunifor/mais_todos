@@ -18,8 +18,7 @@ Nele se encontra uma configuração do projeto em Django e um Banco de Dados em 
 ### OBS: So esta com .env no repositório para facilitar a instala.
 
 ```bash 
-    docker-compose build
-    docker-compose up
+    docker-compose up --build
 ```
 # Autenticação e autorização
 
