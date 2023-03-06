@@ -1,17 +1,16 @@
 
 
-## Principais tecnologias usadas 
+# Principais tecnologias usadas 
 - **Infra**: docker, docker-compose, pip
 - **DB**: postgres
 - **Backend**: Django, Django Rest Framework
-- **CI**: Github Actions.
 - **Test**: coverage, pytest
 - **Lint**: Black, Flake8
 - **Lib**: CreditCard
 
 
 
-## Instalação
+# Instalação
 
 O Projeto possui docker e docker-compose, para ser instalado deve seguir o compose que se encontra na raiz do projeto
 Nele se encontra uma configuração do projeto em Django e um Banco de Dados em Postgres
@@ -24,7 +23,7 @@ Nele se encontra uma configuração do projeto em Django e um Banco de Dados em 
 ```
 # Autenticação e autorização
 
-Para fazer as requisições é necessário passa o token de um usuário valido. Para isso, um usuário é criado junto com o token apos start o projeto.
+Para fazer as requisições é necessário passa o token de um usuário valido. Para isso, um usuário é criado ao automaticamente para teste.
 
 Para pegar o token acesse o endpoint abaixo com os dados do usuário. 
 
@@ -75,8 +74,8 @@ curl --location 'http://localhost:8000/api/v1/credit_card/' \
 ```
 
 # Pegar os dados do cartão. 
-
-Para pegar todos os cartões basta cessar o endpoint abaixo com o token do usuário. 
+## Retornar todos os cartões do usuário
+Para pegar todos os cartões basta acessar o endpoint abaixo com o token do usuário. 
 
 |Verb  |URI Pattern              
 :----:|-------------------------|
@@ -85,19 +84,21 @@ Para pegar todos os cartões basta cessar o endpoint abaixo com o token do usuá
 ## Exemplo
 ### request
 
-```
+```bash
 curl --location 'http://localhost:8000/api/v1/credit_card/' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Token d522c66d29689a63e348a74defc469fa622f35f8'
 ```
 
-Para pegar os dados de um cartão basta cessar o endpoint abaixo com o token do usuário. 
+## Retornar um cartão especifico do usuário
+
+
 
 |Verb  |URI Pattern              
 :----:|-------------------------|
 | GET  | /api/v1/credit_card/id/
 
-```
+```bash
 curl --location 'http://localhost:8000/api/v1/credit_card/1/' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Token d522c66d29689a63e348a74defc469fa622f35f8'
@@ -115,6 +116,4 @@ Para executar os testes com docker-compose
 ## Relacionado
 
 
-[Página do Desafio](https://github.com/iclinic/iclinic-python-challenge)
-
-  
+[Página do Desafio](https://github.com/MaisTodos/backend-python-creditcard)
