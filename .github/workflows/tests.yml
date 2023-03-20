@@ -1,0 +1,16 @@
+name: Integration Tests
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🍽️ Get working copy
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: 🛠 Build project
+        run: docker-compose build --no-cache tests
+      - name: 🚀 Tests
+        run: docker-compose up --exit-code-from tests tests

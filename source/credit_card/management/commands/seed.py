@@ -1,16 +1,16 @@
 from contextlib import suppress
-from decouple import config
-from django.core.management.base import BaseCommand
+
 from django.contrib.auth import get_user_model
+from django.core.management.base import BaseCommand
+
+from decouple import config
 
 
 class Command(BaseCommand):
     help = "Seed database with sample data"
 
     def add_arguments(self, parser):
-        parser.add_argument(
-            "--create-superuser", action="store_true", dest="create_superuser"
-        )
+        parser.add_argument("--create-superuser", action="store_true", dest="create_superuser")
 
     def handle(self, *args, **kwargs):
         self.create_superuser = kwargs["create_superuser"]

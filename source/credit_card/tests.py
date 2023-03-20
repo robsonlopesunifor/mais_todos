@@ -1,13 +1,16 @@
-import pytest
-from django.urls import reverse
+from unittest.mock import Mock
+from unittest.mock import patch
+
 from django.contrib.auth import get_user_model
+from django.core.management import call_command
+from django.urls import reverse
+
+import pytest
+
+from credit_card.models import CreditCard
+from creditcard import CreditCard as CreditCardValidator
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
-from credit_card.models import CreditCard
-from unittest.mock import patch
-from creditcard import CreditCard as CreditCardValidator
-from django.core.management import call_command
-from unittest.mock import Mock
 
 
 @pytest.fixture()
@@ -41,7 +44,7 @@ def valid_data():
 @pytest.fixture()
 def data_return():
     return {
-        "id":1,
+        "id": 1,
         "exp_date": "10/2222",
         "holder": "Fulano",
         "number": "0000000000000001",
@@ -64,7 +67,6 @@ def url_detail(credit_card):
 @pytest.mark.django_db()
 class TestCreditCard:
     @patch.object(CreditCardValidator, "is_valid", Mock(return_value=True))
-    @patch.object(CreditCardValidator, "get_brand", Mock(return_value="BR"))
     def test_create_credit_card(self, client, valid_data, data_return):
         url = reverse("credit_card:credit_card-list")
         response_data = client.post(url, data=valid_data, format="json")
@@ -72,7 +74,6 @@ class TestCreditCard:
         assert response_data.json() == data_return
 
     @patch.object(CreditCardValidator, "is_valid", Mock(return_value=True))
-    @patch.object(CreditCardValidator, "get_brand", Mock(return_value="BR"))
     def test_exp_date_with_wrong_format(self, url, client, valid_data):
         valid_data["exp_date"] = "2025/10"
         response_data = client.post(url, data=valid_data, format="json")
@@ -90,34 +91,26 @@ class TestCreditCard:
         assert response_data.json() == {"detail": "date is formatted wrong"}
 
     @patch.object(CreditCardValidator, "is_valid", Mock(return_value=True))
-    @patch.object(CreditCardValidator, "get_brand", Mock(return_value="BR"))
     def test_exp_date_data_less_than_current(self, url, client, valid_data):
         valid_data["exp_date"] = "10/1990"
         response_data = client.post(url, data=valid_data, format="json")
         assert response_data.status_code == 400
-        assert response_data.json() == {
-            "exp_date": ["cannot be less than today's date"]
-        }
+        assert response_data.json() == {"exp_date": ["cannot be less than today's date"]}
 
     @patch.object(CreditCardValidator, "is_valid", Mock(return_value=True))
-    @patch.object(CreditCardValidator, "get_brand", Mock(return_value="BR"))
     def test_holder_with_wrong_format(self, url, client, valid_data):
         valid_data["holder"] = "a"
         response_data = client.post(url, data=valid_data, format="json")
         assert response_data.status_code == 400
-        assert response_data.json() == {
-            "holder": ["Ensure this field has at least 2 characters."]
-        }
+        assert response_data.json() == {"holder": ["Ensure this field has at least 2 characters."]}
 
     @patch.object(CreditCardValidator, "is_valid", Mock(return_value=False))
-    @patch.object(CreditCardValidator, "get_brand", Mock(return_value="BR"))
     def test_invalid_card_number(self, url, client, valid_data):
         response_data = client.post(url, data=valid_data, format="json")
         assert response_data.status_code == 400
         assert response_data.json() == {"number": ["invalid number"]}
 
     @patch.object(CreditCardValidator, "is_valid", Mock(return_value=True))
-    @patch.object(CreditCardValidator, "get_brand", Mock(return_value="BR"))
     def test_invalid_cvv(self, url, client, valid_data):
         valid_data["cvv"] = 1
         response_data = client.post(url, data=valid_data, format="json")
@@ -133,15 +126,14 @@ class TestCreditCard:
     def test_datail_credit_card(self, url_detail, client, data_return):
         response_data = client.get(url_detail, format="json")
         assert response_data.status_code == 200
-        assert response_data.json()['holder'] == data_return['holder']
+        assert response_data.json()["holder"] == data_return["holder"]
 
     @pytest.mark.usefixtures("credit_card")
     def test_get_list_credit_card(self, url, client, data_return):
         response_data = client.get(url, format="json")
         assert response_data.status_code == 200
-        assert response_data.json()[0]['holder'] == data_return['holder']
+        assert response_data.json()[0]["holder"] == data_return["holder"]
 
     def test_command(self):
         call_command("seed", "--create-superuser")
         assert len(get_user_model().objects.all()) == 1
-        

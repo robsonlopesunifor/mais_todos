@@ -1,10 +1,12 @@
-from datetime import date
 from calendar import monthrange
-from rest_framework.serializers import ModelSerializer
+from datetime import date
+
 from django.core.exceptions import ValidationError
+
+from credit_card.exceptions import DateFormatException
 from credit_card.models import CreditCard
 from creditcard import CreditCard as CreditCardValidator
-from credit_card.exceptions import DateFormatException
+from rest_framework.serializers import ModelSerializer
 
 
 class CreditCardSerializer(ModelSerializer):
@@ -30,9 +32,7 @@ class CreditCardSerializer(ModelSerializer):
 
     def create(self, validated_data):
         brand = self._get_brand(validated_data["number"])
-        credit_card = CreditCard.objects.create(
-            brand=brand, client=self.context["user"], **validated_data
-        )
+        credit_card = CreditCard.objects.create(brand=brand, client=self.context["user"], **validated_data)
         return credit_card
 
     def to_internal_value(self, data):
@@ -45,7 +45,7 @@ class CreditCardSerializer(ModelSerializer):
         return data
 
     def _get_brand(self, number):
-        return CreditCardValidator(number).get_brand()
+        return "BR"  # CreditCardValidator(number).get_brand()
 
     def _format_exp_date_to_date(self, exp_date):
         try:

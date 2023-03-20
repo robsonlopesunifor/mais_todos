@@ -1,6 +1,6 @@
 
 
-# Principais tecnologias usadas 
+# Principais tecnologias usadas
 - **Infra**: docker, docker-compose, pip
 - **DB**: postgres
 - **Backend**: Django, Django Rest Framework
@@ -17,26 +17,26 @@ Nele se encontra uma configuração do projeto em Django e um Banco de Dados em 
 
 ### OBS: So esta com .env no repositório para facilitar a instala.
 
-```bash 
+```bash
     docker-compose up --build
 ```
 # Autenticação e autorização
 
 Para fazer as requisições é necessário passa o token de um usuário valido. Para isso, um usuário é criado ao automaticamente para teste.
 
-Para pegar o token acesse o endpoint abaixo com os dados do usuário. 
+Para pegar o token acesse o endpoint abaixo com os dados do usuário.
 
-```bash 
+```bash
     usuario = pedro
     senha = 123456
 ```
 
-|Verb  |URI Pattern              
+|Verb  |URI Pattern
 :----:|-------------------------|
 | POST  | /api-token-auth/
 
 
-Realize um Post para o endpoint /api-token-auth/ para pegar o token do usuario. 
+Realize um Post para o endpoint /api-token-auth/ para pegar o token do usuario.
 
 ```bash
 curl --location 'http://localhost:8000/api-token-auth/' \
@@ -49,14 +49,14 @@ curl --location 'http://localhost:8000/api-token-auth/' \
 
 # Criar cartão de credito
 
-Para criar o cartão você deve passar os dados do cartão e o token do usuário.  
+Para criar o cartão você deve passar os dados do cartão e o token do usuário.
 
 
-|Verb  |URI Pattern              
+|Verb  |URI Pattern
 :----:|-------------------------|
 | POST  | /api/v1/credit_card/
 
- 
+
 ```bash
 curl --location 'http://localhost:8000/api/v1/credit_card/' \
 --header 'Content-Type: application/json' \
@@ -69,11 +69,11 @@ curl --location 'http://localhost:8000/api/v1/credit_card/' \
 }'
 ```
 
-# Pegar os dados do cartão. 
+# Pegar os dados do cartão.
 ## Retornar todos os cartões do usuário
-Para pegar todos os cartões basta acessar o endpoint abaixo com o token do usuário. 
+Para pegar todos os cartões basta acessar o endpoint abaixo com o token do usuário.
 
-|Verb  |URI Pattern              
+|Verb  |URI Pattern
 :----:|-------------------------|
 | GET  | /api/v1/credit_card/
 
@@ -88,7 +88,7 @@ curl --location 'http://localhost:8000/api/v1/credit_card/' \
 
 
 
-|Verb  |URI Pattern              
+|Verb  |URI Pattern
 :----:|-------------------------|
 | GET  | /api/v1/credit_card/id/
 
@@ -106,7 +106,7 @@ Para executar os testes com docker-compose
   docker-compose run django pytest source
 ```
 
-  
+
 ## Relacionado
 
 

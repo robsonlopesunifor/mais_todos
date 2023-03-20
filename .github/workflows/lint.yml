@@ -1,0 +1,17 @@
+name: Python Lint
+
+on: [pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🍽️ Get working copy
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: 🛠 Build project
+        run: docker-compose build --no-cache lint
+      - name: 🔬 Check code Style
+        run: docker-compose up --exit-code-from lint lint

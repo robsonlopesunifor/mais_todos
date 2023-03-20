@@ -1,0 +1,20 @@
+# Ignore
+Dockerfile
+poetry.lock
+pyproject.toml
+readme.md
+dockerfile.alkmaar
+docker-compose.yml
+requirements.txt
+docker-entrypoint.sh
+scripts
+.gitignore
+source
+.git
+envs
+
+# Don't ignore
+!poetry.lock
+!pyproject.toml
+!readme.md
+!./docker-entrypoint.sh

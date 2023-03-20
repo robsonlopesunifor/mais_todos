@@ -6,20 +6,20 @@ networks:
 services:
   postgres:
     image: postgres
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
+    #volumes:
+    #  - ./data/db:/var/lib/postgresql/data
     env_file:
       - ./envs/postgres.env
     networks:
       - banco
 
   django:
-    build: 
-      dockerfile: ./dockerfile
+    build:
+      dockerfile: ./Dockerfile
       context: .
-    command: ["./scripts/start.sh"]
     volumes:
       - .:/app
+    command: ["./scripts/start.sh"]
     env_file:
       - ./envs/postgres.env
       - ./envs/.env
@@ -32,3 +32,31 @@ services:
     networks:
       - banco
       - back
+    healthcheck:
+      test: curl --fail http://localhost:8000 || exit 1
+      interval: 10s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
+  lint:
+    container_name: django-lint
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    env_file: ./envs/.env
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: ["./scripts/start-lint.sh"]
+
+  tests:
+    container_name: django-tests
+    image: python:3.10-slim-bullseye
+    env_file: ./envs/.env
+    working_dir: /app
+    volumes:
+      - .:/app
+    depends_on:
+      - django
+    command: ["./scripts/start-tests.sh"]
